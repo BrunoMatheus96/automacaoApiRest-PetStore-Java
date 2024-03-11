@@ -21,7 +21,6 @@ public class PetTest {
         //Configurando os dados da API Rest da Lojinha
         baseURI = "https://petstore.swagger.io/v2";
         //Caminho inicial da aplicação que se repete em todas as URL
-        //basePath = "/pet";
     }
 
     String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
