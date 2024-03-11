@@ -19,6 +19,7 @@ public class PetTest {
         basePath = "/pet";
     }
 
+    String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
     //GET - BUSCA DE PET POR STATUS
     @Test
@@ -68,7 +69,6 @@ public class PetTest {
     @Test
     @DisplayName("Busca por Status 04 - Validar status 405")
     public void testBuscaPorStatus04() {
-        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
         for (String method : methods) {
             given().
@@ -83,13 +83,15 @@ public class PetTest {
 
     //GET - BUSCA DE PET POR ID
 
+    String petId = "9";
+
     @Test
     @DisplayName("Busca por ID 01 - Validar a procura de pets por ID")
     public void testBuscaPorId01() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/9").
+                get(petId).
                 then().
                 assertThat().statusCode(200).and().
                 log().all();
@@ -112,8 +114,6 @@ public class PetTest {
     @Test
     @DisplayName("Busca por ID 03 - Validar status 405 por ID")
     public void testBuscaPorId03() {
-        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
-
         for (String method : methods) {
             given().
                     relaxedHTTPSValidation().
@@ -131,7 +131,7 @@ public class PetTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/9").
+                get(petId).
                 then().
                 assertThat().statusCode(200).
                 assertThat().body("id", instanceOf(Number.class)).
