@@ -2,12 +2,10 @@ package modulos.pet;
 
 // Importações necessárias para os testes do módulo de produto
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;  // Importa a anotação DisplayName para definir o nome dos testes
-import org.junit.jupiter.api.Test;  // Importa a anotação Test para indicar que um método é um teste
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Pet'") //Título principal
@@ -22,10 +20,10 @@ public class PetTest {
     }
 
 
-    //GET DE BUSCA DE PET POR STATUS
+    //GET - BUSCA DE PET POR STATUS
     @Test
-    @DisplayName("Cenário 01 - Validar a procura de pets por status available")
-    public void testValidarAProcuraDePetsPorStatusAvailable() {
+    @DisplayName("Busca por Status 01 - Validar a procura de pets por status available")
+    public void testBuscaPorStatus01() {
         // Criação dos objetos PetPojo com diferentes status
         // Chamada do serviço para cada status e validação
         given().
@@ -34,56 +32,125 @@ public class PetTest {
                 when().
                 get("/findByStatus").
                 then().
-                assertThat().statusCode(200).and().log().all();
+                assertThat().statusCode(200).and().
+                assertThat().body("status", hasItem("available")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                log().all();
     }
 
     @Test
-    @DisplayName("Cenário 02 - Validar a procura de pets por status pending")
-    public void testValidarAProcuraDePetsPorStatusPending() {
+    @DisplayName("Busca por Status 02 - Validar a procura de pets por status pending")
+    public void testBuscaPorStatus02() {
         given().
                 relaxedHTTPSValidation().
                 queryParam("status", "pending"). // Adiciona o status "available" como parâmetro de consulta
                 when().
                 get("/findByStatus").
                 then().
-                assertThat().statusCode(200).and().log().all();
+                assertThat().statusCode(200).and().
+                assertThat().body("status", hasItem("pending")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                log().all();
     }
 
     @Test
-    @DisplayName("Cenário 03 - Validar a procura de pets por status sold")
-    public void testValidarAProcuraDePetsPorStatusSold() {
+    @DisplayName("Busca por Status 03 - Validar a procura de pets por status sold")
+    public void testBuscaPorStatus03() {
         given().
                 relaxedHTTPSValidation().
                 queryParam("status", "sold"). // Adiciona o status "available" como parâmetro de consulta
                 when().
                 get("/findByStatus").
                 then().
-                assertThat().statusCode(200).and().log().all();
+                assertThat().statusCode(200).
+                assertThat().body("status", hasItem("sold")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                log().all();
     }
 
     @Test
-    @DisplayName("Cenário 04 - Validar a procura de pets por ID")
-    public void testValidarAProcuraDePetsPorId() {
+    @DisplayName("Busca por Status 04 - Validar status 405")
+    public void testBuscaPorStatus04() {
+        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
+
+        for (String method : methods) {
+            given().
+                    relaxedHTTPSValidation().
+                    queryParam("status", "sold").
+                    when().
+                    request(method, "/findByStatus").
+                    then().
+                    assertThat().statusCode(405).and().log().all();
+        }
+    }
+
+    //GET - BUSCA DE PET POR ID
+
+    @Test
+    @DisplayName("Busca por ID 01 - Validar a procura de pets por ID")
+    public void testBuscaPorId01() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/2837244985").
+                get("/9").
                 then().
-                assertThat().statusCode(200).and().log().all();
+                assertThat().statusCode(200).and().
+                log().all();
     }
 
-
-    //GET DE BUSCA DE PET POR ID
     @Test
-    @DisplayName("Cenário 05 - Validar a procura de pets por ID com erro")
-    public void testValidarAProcuraDePetsPorIdComErro() {
+    @DisplayName("Busca por ID 02 - Validar a procura de pets por ID com erro")
+    public void testBuscaPorId02() {
         given().
                 relaxedHTTPSValidation().
                 when().
                 get("/0").
                 then().
-                assertThat().
-                body("message", equalTo("Pet not found")).
-                statusCode(404).and().log().all();
+                statusCode(404).
+                assertThat().body("message", equalTo("Pet not found")).
+                assertThat().body("type", equalTo("error")). // Verifica se o tipo de erro é "error"
+                log().all();
     }
+
+    @Test
+    @DisplayName("Busca por ID 03 - Validar status 405 por ID")
+    public void testBuscaPorId03() {
+        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
+
+        for (String method : methods) {
+            given().
+                    relaxedHTTPSValidation().
+                    queryParam("status", "sold").
+                    when().
+                    request(method, "/findByStatus").
+                    then().
+                    assertThat().statusCode(405).and().log().all();
+        }
+    }
+
+    @Test
+    @DisplayName("Busca por ID 04 - Valida se o campo id é um number")
+    public void testBuscaPorId04() {
+        given().
+                relaxedHTTPSValidation().
+                when().
+                get("/9").
+                then().
+                assertThat().statusCode(200).
+                assertThat().body("id", instanceOf(Number.class)).
+                assertThat().body("id", equalTo(9)).
+                log().all();
+    }
+
+    //POST - Criação de um novo Pet
+    @Test
+    @DisplayName("Criação de Pet 01- Criar um Pet novo")
+    public void testCricaoDePet01() {
+        given().
+                relaxedHTTPSValidation().
+                body("").
+                when().
+                post().
+                then().
+                assertThat().statusCode(200);
+
+    }
+
 }
