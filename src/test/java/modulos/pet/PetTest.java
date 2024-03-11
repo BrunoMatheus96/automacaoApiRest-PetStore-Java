@@ -2,7 +2,12 @@ package modulos.pet;
 
 // Importações necessárias para os testes do módulo de produto
 
+import DataFactory.PetDataFactory;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+import pojo.PetPojo;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -16,9 +21,9 @@ public class PetTest {
         //Configurando os dados da API Rest da Lojinha
         baseURI = "https://petstore.swagger.io/v2";
         //Caminho inicial da aplicação que se repete em todas as URL
-        basePath = "/pet";
     }
 
+    String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
     //GET - BUSCA DE PET POR STATUS
     @Test
@@ -30,7 +35,7 @@ public class PetTest {
                 relaxedHTTPSValidation().
                 queryParam("status", "available"). // Adiciona o status "available" como parâmetro de consulta
                 when().
-                get("/findByStatus").
+                get("/pet/findByStatus").
                 then().
                 assertThat().statusCode(200).and().
                 assertThat().body("status", hasItem("available")). // Verifica se pelo menos um dos pets retornados tem status "available"
@@ -44,7 +49,7 @@ public class PetTest {
                 relaxedHTTPSValidation().
                 queryParam("status", "pending"). // Adiciona o status "available" como parâmetro de consulta
                 when().
-                get("/findByStatus").
+                get("/pet/findByStatus").
                 then().
                 assertThat().statusCode(200).and().
                 assertThat().body("status", hasItem("pending")). // Verifica se pelo menos um dos pets retornados tem status "available"
@@ -58,7 +63,7 @@ public class PetTest {
                 relaxedHTTPSValidation().
                 queryParam("status", "sold"). // Adiciona o status "available" como parâmetro de consulta
                 when().
-                get("/findByStatus").
+                get("/pet/findByStatus").
                 then().
                 assertThat().statusCode(200).
                 assertThat().body("status", hasItem("sold")). // Verifica se pelo menos um dos pets retornados tem status "available"
@@ -68,14 +73,13 @@ public class PetTest {
     @Test
     @DisplayName("Busca por Status 04 - Validar status 405")
     public void testBuscaPorStatus04() {
-        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
         for (String method : methods) {
             given().
                     relaxedHTTPSValidation().
                     queryParam("status", "sold").
                     when().
-                    request(method, "/findByStatus").
+                    request(method, "/pet/findByStatus").
                     then().
                     assertThat().statusCode(405).and().log().all();
         }
@@ -83,13 +87,15 @@ public class PetTest {
 
     //GET - BUSCA DE PET POR ID
 
+    String petId = "/pet/9";
+
     @Test
     @DisplayName("Busca por ID 01 - Validar a procura de pets por ID")
     public void testBuscaPorId01() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/9").
+                get(petId).
                 then().
                 assertThat().statusCode(200).and().
                 log().all();
@@ -101,7 +107,7 @@ public class PetTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/0").
+                get("/pet/0").
                 then().
                 statusCode(404).
                 assertThat().body("message", equalTo("Pet not found")).
@@ -110,28 +116,12 @@ public class PetTest {
     }
 
     @Test
-    @DisplayName("Busca por ID 03 - Validar status 405 por ID")
-    public void testBuscaPorId03() {
-        String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
-
-        for (String method : methods) {
-            given().
-                    relaxedHTTPSValidation().
-                    queryParam("status", "sold").
-                    when().
-                    request(method, "/findByStatus").
-                    then().
-                    assertThat().statusCode(405).and().log().all();
-        }
-    }
-
-    @Test
-    @DisplayName("Busca por ID 04 - Valida se o campo id é um number")
+    @DisplayName("Busca por ID 03 - Valida se o campo id é um number")
     public void testBuscaPorId04() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/9").
+                get(petId).
                 then().
                 assertThat().statusCode(200).
                 assertThat().body("id", instanceOf(Number.class)).
@@ -145,12 +135,51 @@ public class PetTest {
     public void testCricaoDePet01() {
         given().
                 relaxedHTTPSValidation().
-                body("").
+                contentType(ContentType.JSON).
+                body(PetDataFactory.envioDeDados()).
                 when().
-                post().
+                post("/pet").
                 then().
-                assertThat().statusCode(200);
+                statusCode(200).log().all();
+    }
 
+    @Test
+    @DisplayName("Criação de Pet 02- Validar status 405")
+    public void testCricaoDePet02() {
+        String[] methodsReqPost = {"PATCH", "DELETE", "GET"};
+        for (String method : methodsReqPost) {
+            given().
+                    relaxedHTTPSValidation().
+                    contentType(ContentType.JSON).
+                    body(PetDataFactory.envioDeDados()).
+                    when().
+                    request(method, "/pet").
+                    then().
+                    assertThat().statusCode(405).and().log().all();
+        }
+    }
+
+    @Test
+    @DisplayName("Criação de Pet 03- Validar campos presentes no Payload")
+    public void testCricaoDePet03() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(PetDataFactory.envioDeDados()).
+                when().
+                get("/pet/{id}", 1). // Substitua {id} pelo ID real do pet.
+                then().
+                assertThat().
+                body("id", instanceOf(Number.class)).
+                body("category", instanceOf(Object.class)).
+                body("name", instanceOf(String.class)).
+                body("photoUrls", instanceOf(List.class)).
+                body("photoUrls", everyItem(instanceOf(String.class))).
+                body("tags", instanceOf(List.class)).
+                body("tags", everyItem(instanceOf(Object.class))).
+                body("status", instanceOf(String.class)).
+                assertThat().statusCode(200).
+                log().all(); // Log de todos os detalhes da resposta para debug.
     }
 
 }
