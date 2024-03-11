@@ -4,8 +4,8 @@
     :construction:  Projeto em construção  :construction:
 </h4>
 
-Este é um projeto desenvolvido em Java para automatizar testes de API Rest utilizando bibliotecas como RestAssured e
-JUnit.
+
+Este é um projeto desenvolvido em Java para automatizar testes de API Rest utilizando bibliotecas como RestAssured e JUnit.
 
 ## Pré-requisitos
 
@@ -25,9 +25,7 @@ JUnit.
 2. Execute os testes utilizando a IDE ou execute o seguinte comando no terminal na raiz do projeto: mvn test
 
 ## APIs
-
 ![Badge em Desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=%20PENDENTE&olor=gray&style=for-the-badge)
-
 * POST - Upload de imagem
 * PUT
 * POST - Update de Pet com a data
