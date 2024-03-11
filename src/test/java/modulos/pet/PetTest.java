@@ -7,6 +7,8 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
 import pojo.PetPojo;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -124,7 +126,7 @@ public class PetTest {
                 then().
                 assertThat().statusCode(200).
                 assertThat().body("id", instanceOf(Number.class)).
-                assertThat().body("id", equalTo(petId)).
+                assertThat().body("id", equalTo(9)).
                 log().all();
     }
 
@@ -140,6 +142,45 @@ public class PetTest {
                 post("/pet").
                 then().
                 statusCode(200).log().all();
+    }
+
+    @Test
+    @DisplayName("Criação de Pet 02- Validar status 405")
+    public void testCricaoDePet02() {
+        String[] methodsReqPost = {"PATCH", "DELETE", "GET"};
+        for (String method : methodsReqPost) {
+            given().
+                    relaxedHTTPSValidation().
+                    contentType(ContentType.JSON).
+                    body(PetDataFactory.envioDeDados()).
+                    when().
+                    request(method, "/pet").
+                    then().
+                    assertThat().statusCode(405).and().log().all();
+        }
+    }
+
+    @Test
+    @DisplayName("Criação de Pet 03- Validar campos presentes no Payload")
+    public void testCricaoDePet03() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(PetDataFactory.envioDeDados()).
+                when().
+                get("/pet/{id}", 1). // Substitua {id} pelo ID real do pet.
+                then().
+                assertThat().
+                body("id", instanceOf(Number.class)).
+                body("category", instanceOf(Object.class)).
+                body("name", instanceOf(String.class)).
+                body("photoUrls", instanceOf(List.class)).
+                body("photoUrls", everyItem(instanceOf(String.class))).
+                body("tags", instanceOf(List.class)).
+                body("tags", everyItem(instanceOf(Object.class))).
+                body("status", instanceOf(String.class)).
+                assertThat().statusCode(200).
+                log().all(); // Log de todos os detalhes da resposta para debug.
     }
 
 }

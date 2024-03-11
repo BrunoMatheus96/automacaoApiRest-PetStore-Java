@@ -6,7 +6,7 @@ public class PetPojo {
         private Integer id;
         private CategoryPojo category;
         private String name;
-        private List<String> photos;
+        private List<String> photoUrls;
         private List<TagPojo> tags;
         private String status;
 
@@ -35,14 +35,6 @@ public class PetPojo {
         this.name = name;
     }
 
-    public List<String> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
-    }
-
     public List<TagPojo> getTags() {
         return tags;
     }
@@ -57,5 +49,13 @@ public class PetPojo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<String> getPhotosUrls() {
+        return photoUrls;
+    }
+
+    public void setPhotoUrls(List<String> photoUrls) {
+        this.photoUrls = photoUrls;
     }
 }

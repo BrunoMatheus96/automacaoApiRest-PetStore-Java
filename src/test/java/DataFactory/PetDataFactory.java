@@ -13,18 +13,17 @@ public class PetDataFactory {
 
         informacoes.setId(9);
         informacoes.setCategory(CategoryDataFactor.envioDeCategory());
-
         informacoes.setName("Lua");
 
-        List<String> photos = new ArrayList<>();
-        photos.add("Sem fotos");
-        informacoes.setPhotos(photos);
+        List<String> photo = new ArrayList<>();
+        photo.add("Da certo, por favor");
+        informacoes.setPhotoUrls(photo);
 
         List<TagPojo> tag = new ArrayList<>();
         tag.add(TagDataFactory.envioDeTags());
         informacoes.setTags(tag);
 
-        informacoes.setStatus("Meu neném");
+        informacoes.setStatus("pending");
 
 
         return informacoes;
