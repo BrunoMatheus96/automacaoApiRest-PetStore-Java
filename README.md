@@ -14,13 +14,7 @@ ste é um projeto desenvolvido em Java para automatizar testes de API Rest utili
 2. Importe o projeto para a sua IDE.
 3. Certifique-se de ter todas as dependências do Maven baixadas e atualizadas.
 
-## Estrutura do Projeto
-src
-│
-└───test
-│
-└───java
-│
-└───api
-│
-└───tests
+## Executando os Testes
+1. Navegue até a classe de teste que deseja executar.
+2. Execute os testes utilizando a IDE ou execute o seguinte comando no terminal na raiz do projeto: mvn test
+
