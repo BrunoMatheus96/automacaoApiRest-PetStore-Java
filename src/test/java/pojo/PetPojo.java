@@ -1,47 +1,53 @@
 package pojo;
 
-import org.junit.experimental.categories.Category;
-import org.junit.jupiter.api.Tag;
-
 import java.util.List;
 
 public class PetPojo {
-    private Integer petId;
-    private String petName;
-    private List<String> petPhoto;
-    private List<Tag> tags;
-    private String status;
-    private Category category;
+        private Integer id;
+        private CategoryPojo category;
+        private String name;
+        private List<String> photos;
+        private List<TagPojo> tags;
+        private String status;
 
-    public Integer getPetId() {
-        return petId;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setPetId(Integer petId) {
-        this.petId = petId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getPetName() {
-        return petName;
+    public CategoryPojo getCategory() {
+        return category;
     }
 
-    public void setPetName(String petName) {
-        this.petName = petName;
+    public void setCategory(CategoryPojo category) {
+        this.category = category;
     }
 
-    public List<String> getPetPhoto() {
-        return petPhoto;
+    public String getName() {
+        return name;
     }
 
-    public void setPetPhoto(List<String> petPhoto) {
-        this.petPhoto = petPhoto;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Tag> getTags() {
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public List<TagPojo> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagPojo> tags) {
         this.tags = tags;
     }
 
@@ -51,13 +57,5 @@ public class PetPojo {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 }

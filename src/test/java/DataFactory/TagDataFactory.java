@@ -1,10 +1,14 @@
 package DataFactory;
 
-import pojo.TagsPojo;
+import pojo.TagPojo;
 
 public class TagDataFactory {
-    public static TagsPojo createSampleTag() {
-        TagsPojo tag = new TagsPojo();
+    public static TagPojo envioDeTags() {
+
+        TagPojo tag = new TagPojo();
+
+        tag.setName("Amor da minha vida");
+        tag.setId(1);
 
         return tag;
     }

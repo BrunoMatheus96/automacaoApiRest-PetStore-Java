@@ -1,12 +1,32 @@
 package DataFactory;
 
+import pojo.CategoryPojo;
 import pojo.PetPojo;
+import pojo.TagPojo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PetDataFactory {
+    public static PetPojo envioDeDados(){
+        PetPojo informacoes = new PetPojo();
 
-    public static PetPojo createSamplePet() {
-        PetPojo pet = new PetPojo();
+        informacoes.setId(9);
+        informacoes.setCategory(CategoryDataFactor.envioDeCategory());
 
-        return pet;
+        informacoes.setName("Lua");
+
+        List<String> photos = new ArrayList<>();
+        photos.add("Sem fotos");
+        informacoes.setPhotos(photos);
+
+        List<TagPojo> tag = new ArrayList<>();
+        tag.add(TagDataFactory.envioDeTags());
+        informacoes.setTags(tag);
+
+        informacoes.setStatus("Meu neném");
+
+
+        return informacoes;
     }
 }

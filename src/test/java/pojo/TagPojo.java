@@ -1,6 +1,6 @@
 package pojo;
 
-public class CategoryPojo {
+public class TagPojo {
     private Integer id;
     private String name;
 
