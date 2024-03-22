@@ -32,11 +32,12 @@ https://petstore.swagger.io/#/pet
 * PUT
 * POST - Update de Pet com a data
 * DELETE - Exclusão de Pet
-* GET - Pet por ID
 * POST - Novo pet
 
 ![Badge em Desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=blue&style=for-the-badge)
+* POST - Criação de um novo Pet-
 
-* GET - Find Pets by Status
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUÍDO&color=GREEN&style=for-the-badge)
+* GET - Find Pets by Status
+* GET - Pet por ID
