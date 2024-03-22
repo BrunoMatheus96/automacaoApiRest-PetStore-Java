@@ -5,8 +5,8 @@ package modulos.pet;
 import DataFactory.PetDataFactory;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
-import pojo.PetPojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -25,12 +25,10 @@ public class PetTest {
 
     String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
-    //GET - BUSCA DE PET POR STATUS
+    /*-------------------------------------GET - BUSCA DE PET POR STATUS----------------------------------------*/
     @Test
-    @DisplayName("Busca por Status 01 - Validar a procura de pets por status available")
+    @DisplayName("Busca por Status 01 - Validar a procura de pets por status available e a estrutura da resposta")
     public void testBuscaPorStatus01() {
-        // Criação dos objetos PetPojo com diferentes status
-        // Chamada do serviço para cada status e validação
         given().
                 relaxedHTTPSValidation().
                 queryParam("status", "available"). // Adiciona o status "available" como parâmetro de consulta
@@ -38,12 +36,21 @@ public class PetTest {
                 get("/pet/findByStatus").
                 then().
                 assertThat().statusCode(200).and().
-                assertThat().body("status", hasItem("available")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                assertThat().body("category.id", everyItem(anyOf(instanceOf(Number.class), nullValue()))).
+                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", hasItem("available")).
+                assertThat().contentType(ContentType.JSON).
                 log().all();
     }
 
     @Test
-    @DisplayName("Busca por Status 02 - Validar a procura de pets por status pending")
+    @DisplayName("Busca por Status 02 - Validar a procura de pets por status pending e a estrutura da resposta")
     public void testBuscaPorStatus02() {
         given().
                 relaxedHTTPSValidation().
@@ -52,12 +59,21 @@ public class PetTest {
                 get("/pet/findByStatus").
                 then().
                 assertThat().statusCode(200).and().
-                assertThat().body("status", hasItem("pending")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                assertThat().body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", hasItem("pending")).
+                assertThat().contentType(ContentType.JSON).
                 log().all();
     }
 
     @Test
-    @DisplayName("Busca por Status 03 - Validar a procura de pets por status sold")
+    @DisplayName("Busca por Status 03 - Validar a procura de pets por status sold e a estrutura da resposta")
     public void testBuscaPorStatus03() {
         given().
                 relaxedHTTPSValidation().
@@ -65,8 +81,17 @@ public class PetTest {
                 when().
                 get("/pet/findByStatus").
                 then().
-                assertThat().statusCode(200).
-                assertThat().body("status", hasItem("sold")). // Verifica se pelo menos um dos pets retornados tem status "available"
+                assertThat().statusCode(200).and().
+                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                assertThat().body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", hasItem("sold")).
+                assertThat().contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -85,12 +110,12 @@ public class PetTest {
         }
     }
 
-    //GET - BUSCA DE PET POR ID
+    /*-------------------------------------GET - BUSCA DE PET POR ID--------------------------------------------------*/
 
     String petId = "/pet/9";
 
     @Test
-    @DisplayName("Busca por ID 01 - Validar a procura de pets por ID")
+    @DisplayName("Busca por ID 01 - Validar a procura de pets por ID e a estrutura da resposta")
     public void testBuscaPorId01() {
         given().
                 relaxedHTTPSValidation().
@@ -98,6 +123,17 @@ public class PetTest {
                 get(petId).
                 then().
                 assertThat().statusCode(200).and().
+                assertThat().body("id", instanceOf(Number.class)).
+                assertThat().body("id", equalTo(9)).
+                assertThat().body("category", (instanceOf(Object.class))). // Verifica se cada item de category é um objeto ou nulo
+                assertThat().body("category.id", (instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                assertThat().body("category.name", (instanceOf(String.class))). // Verifica se o campo category.name é do tipo String ou nulo
+                assertThat().body("name", (instanceOf(String.class))).
+                assertThat().body("tags", (instanceOf(ArrayList.class))). // Verifica se cada item TAGS é uma lista ou nulo
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", (instanceOf(String.class))).
+                assertThat().contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -107,7 +143,7 @@ public class PetTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/pet/0").
+                get("/pet/10000").
                 then().
                 statusCode(404).
                 assertThat().body("message", equalTo("Pet not found")).
@@ -116,20 +152,18 @@ public class PetTest {
     }
 
     @Test
-    @DisplayName("Busca por ID 03 - Valida se o campo id é um number")
-    public void testBuscaPorId04() {
+    @DisplayName("Busca por ID 03 - Validar Status 405")
+    public void testBuscaPorId03() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get(petId).
+                put(petId).
                 then().
-                assertThat().statusCode(200).
-                assertThat().body("id", instanceOf(Number.class)).
-                assertThat().body("id", equalTo(9)).
+                assertThat().statusCode(405).and().
                 log().all();
     }
 
-    //POST - Criação de um novo Pet
+    /*-----------------------------------POST - Criação de um novo Pet------------------------------------------------*/
     @Test
     @DisplayName("Criação de Pet 01- Criar um Pet novo")
     public void testCricaoDePet01() {
@@ -140,7 +174,9 @@ public class PetTest {
                 when().
                 post("/pet").
                 then().
-                statusCode(200).log().all();
+                statusCode(200).
+                assertThat().contentType(ContentType.JSON).
+                log().all();
     }
 
     @Test
@@ -160,26 +196,27 @@ public class PetTest {
     }
 
     @Test
-    @DisplayName("Criação de Pet 03- Validar campos presentes no Payload")
+    @DisplayName("Criação de Pet 03- Validar status 400")
     public void testCricaoDePet03() {
-        given().
-                relaxedHTTPSValidation().
-                contentType(ContentType.JSON).
-                body(PetDataFactory.envioDeDados()).
-                when().
-                get("/pet/{id}", 1). // Substitua {id} pelo ID real do pet.
-                then().
-                assertThat().
-                body("id", instanceOf(Number.class)).
-                body("category", instanceOf(Object.class)).
-                body("name", instanceOf(String.class)).
-                body("photoUrls", instanceOf(List.class)).
-                body("photoUrls", everyItem(instanceOf(String.class))).
-                body("tags", instanceOf(List.class)).
-                body("tags", everyItem(instanceOf(Object.class))).
-                body("status", instanceOf(String.class)).
-                assertThat().statusCode(200).
-                log().all(); // Log de todos os detalhes da resposta para debug.
-    }
+            given().
+                    relaxedHTTPSValidation().
+                    contentType(ContentType.JSON).
+                    body("").
+                    when().
+                    request("/pet").
+                    then().
+                    assertThat().statusCode(400).and().log().all();
+        }
+
+    /*----------------------------------------------PUT---------------------------------------------------------------*/
+
+
+    /*---------------------------------------POST - Upload de imagem--------------------------------------------------*/
+
+
+    /*-----------------------------------POST - Update de Pet com a data----------------------------------------------*/
+
+
+    /*--------------------------------------DELETE - Exclusão de Pet--------------------------------------------------*/
 
 }
