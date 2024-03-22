@@ -24,7 +24,9 @@ Este é um projeto desenvolvido em Java para automatizar testes de API Rest util
 1. Navegue até a classe de teste que deseja executar.
 2. Execute os testes utilizando a IDE ou execute o seguinte comando no terminal na raiz do projeto: mvn test
 
-## APIs
+## Swagger
+https://petstore.swagger.io/#/pet
+### APIs
 ![Badge em Desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=%20PENDENTE&olor=gray&style=for-the-badge)
 * POST - Upload de imagem
 * PUT
