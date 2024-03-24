@@ -313,9 +313,6 @@ public class PetTest {
                 assertThat().body("status", equalTo("sold")).log().all();
     }
 
-    /*---------------------------------------POST - Upload de imagem--------------------------------------------------*/
-
-
     /*-----------------------------------POST - Update de Pet com a data----------------------------------------------*/
 
 
