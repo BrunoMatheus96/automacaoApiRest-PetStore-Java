@@ -175,7 +175,6 @@ public class PetTest {
                 post("/pet").
                 then().
                 statusCode(200).
-                assertThat().contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -198,17 +197,50 @@ public class PetTest {
     @Test
     @DisplayName("Criação de Pet 03- Validar status 400")
     public void testCricaoDePet03() {
-            given().
-                    relaxedHTTPSValidation().
-                    contentType(ContentType.JSON).
-                    body("").
-                    when().
-                    request("/pet").
-                    then().
-                    assertThat().statusCode(400).and().log().all();
-        }
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body("").
+                when().
+                request("/pet").
+                then().
+                assertThat().statusCode(400).and().log().all();
+    }
 
-    /*-----------------------------------------PUT - Atualização------------------------------------------------------*/
+    @Test
+    @DisplayName("Criação de Pet 04- Validar estrutura de payload e response")
+    public void testCricaoDePet04() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(PetDataFactory.envioDeDados()).
+                when().
+                post("/pet").
+                then().
+                statusCode(200).
+                assertThat().body("id", instanceOf(Number.class)).
+                assertThat().body("id", equalTo(9)).
+                assertThat().body("category", (instanceOf(Object.class))). // Verifica se cada item de category é um objeto ou nulo
+                assertThat().body("category.id", equalTo(0)).
+                assertThat().body("category.name", equalTo("Teste")).
+                assertThat().body("name", equalTo("Lua")).
+                assertThat().body("tags", (instanceOf(ArrayList.class))).
+                assertThat().body("tags.id", hasItem(1)).
+                assertThat().body("tags.name", everyItem(equalTo("Amor da minha vida"))).
+                assertThat().body("status", equalTo("pending")).
+                assertThat().contentType(ContentType.JSON). //Valida se a resposta da API está na estrutura esperada (JSON, XML, etc.).
+                //Tipagem de dados nas respostas deve estar igual ao Swagger
+                        assertThat().body("category.id", (instanceOf(Integer.class))).
+                assertThat().body("category.name", (instanceOf(String.class))).
+                assertThat().body("name", (instanceOf(String.class))).
+                assertThat().body("tags", (instanceOf(ArrayList.class))).
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", (instanceOf(String.class))).
+                log().all();
+    }
+
+    /*-----------------------------------------PUT - Atualizações-----------------------------------------------------*/
 
 
     /*---------------------------------------POST - Upload de imagem--------------------------------------------------*/
