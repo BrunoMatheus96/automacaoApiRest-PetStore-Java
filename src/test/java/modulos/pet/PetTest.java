@@ -2,6 +2,7 @@ package modulos.pet;
 
 // Importações necessárias para os testes do módulo de produto
 
+import DataFactory.NewPetDataFactory;
 import DataFactory.PetDataFactory;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
@@ -241,6 +242,20 @@ public class PetTest {
     }
 
     /*-----------------------------------------PUT - Atualizações-----------------------------------------------------*/
+
+    @Test
+    @DisplayName("Atualização de Pet 01- Atualização de campos")
+    public void testAtualizacaoDePet01() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(NewPetDataFactory.atualizacaoDeDados(10, "Lua 02", "sold")).
+                when().
+                post("/pet").
+                then().
+                statusCode(200).
+                log().all();
+    }
 
 
     /*---------------------------------------POST - Upload de imagem--------------------------------------------------*/
