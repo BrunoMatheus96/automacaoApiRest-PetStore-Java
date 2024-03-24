@@ -231,7 +231,7 @@ public class PetTest {
                 assertThat().body("status", equalTo("pending")).
                 assertThat().contentType(ContentType.JSON). //Valida se a resposta da API está na estrutura esperada (JSON, XML, etc.).
                 //Tipagem de dados nas respostas deve estar igual ao Swagger
-                        assertThat().body("category.id", (instanceOf(Integer.class))).
+                assertThat().body("category.id", (instanceOf(Integer.class))).
                 assertThat().body("category.name", (instanceOf(String.class))).
                 assertThat().body("name", (instanceOf(String.class))).
                 assertThat().body("tags", (instanceOf(ArrayList.class))).
@@ -251,12 +251,67 @@ public class PetTest {
                 contentType(ContentType.JSON).
                 body(NewPetDataFactory.atualizacaoDeDados(10, "Lua 02", "sold")).
                 when().
-                post("/pet").
+                put("/pet").
                 then().
                 statusCode(200).
                 log().all();
     }
 
+    @Test
+    @DisplayName("Atualização de Pet 02 - Validar tipagem de dados nas respostas deve estar igual ao Swagger")
+    public void testAtualizacaoDePet02() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(NewPetDataFactory.atualizacaoDeDados(10, "Lua 02", "sold")).
+                when().
+                put("/pet").
+                then().
+                statusCode(200).
+                assertThat().body("category.id", (instanceOf(Integer.class))).
+                assertThat().body("category.name", (instanceOf(String.class))).
+                assertThat().body("name", (instanceOf(String.class))).
+                assertThat().body("tags", (instanceOf(ArrayList.class))).
+                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                assertThat().body("status", (instanceOf(String.class))).
+                log().all();
+    }
+
+    @Test
+    @DisplayName("Atualização de Pet 03 - Validar se a resposta da API está na estrutura esperada (JSON, XML, etc.).")
+    public void testAtualizacaoDePet03() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(NewPetDataFactory.atualizacaoDeDados(10, "Lua 02", "sold")).
+                when().
+                put("/pet").
+                then().
+                statusCode(200).
+                assertThat().contentType(ContentType.JSON);
+    }
+
+    @Test
+    @DisplayName("Atualização de Pet 04 - Validar que o response da API deve estar igual ao do Swagger.")
+    public void testAtualizacaoDePet04() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(NewPetDataFactory.atualizacaoDeDados(10, "Lua 02", "sold")).
+                when().
+                put("/pet").
+                then().
+                statusCode(200).
+                assertThat().contentType(ContentType.JSON).
+                assertThat().body("id", equalTo(10)).
+                assertThat().body("category.id", equalTo(1)).
+                assertThat().body("category.name", equalTo("Teste 02")).
+                assertThat().body("name", equalTo("Lua 02")).
+                assertThat().body("tags.id", hasItem(11)).
+                assertThat().body("tags.name", everyItem(equalTo("Amor da minha vida 02"))).
+                assertThat().body("status", equalTo("sold")).log().all();
+    }
 
     /*---------------------------------------POST - Upload de imagem--------------------------------------------------*/
 
