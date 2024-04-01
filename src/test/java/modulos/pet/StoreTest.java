@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Store'") //Título principal
-public class StoreTestUrlTest extends BaseUrlTest {
+public class StoreTest extends BaseUrlTest {
 
     /*-----------------------------------GET - RETORNA INVENTÁRIO DE PET POR STATUS-----------------------------------*/
     @Test

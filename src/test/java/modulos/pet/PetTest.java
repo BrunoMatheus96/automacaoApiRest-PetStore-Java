@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Pet'") //Título principal
-public class PetTestUrlTest extends BaseUrlTest {
+public class PetTest extends BaseUrlTest {
     String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
     /*-------------------------------------GET - BUSCA DE PET POR STATUS----------------------------------------*/
