@@ -50,11 +50,20 @@ public class StoreTest {
     }
 
     /*---------------------------------------------GET - PESQUISA POR ID ---------------------------------------------*/
-    String Id = "/10";
+    String Id = "/9";
 
     @Test
     @DisplayName("Pesquisa por Id 01 - Validar Status 200")
     public void testPesquisaPorId01() {
+        // Realiza o cadastro
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(StoreDataFactory.cadastroStore()).
+                when().
+                post(basePathStore).
+                then().
+                statusCode(200);
         given().
                 relaxedHTTPSValidation().
                 when().
@@ -186,4 +195,17 @@ public class StoreTest {
                 and().log().all();
     }
 
+    /*-------------------------------------------------DELETE---------------------------------------------------------*/
+    @Test
+    @DisplayName("Exclusão 01 - Validar Status 200")
+    public void testDelete01() {
+        given().
+                relaxedHTTPSValidation().
+                when().
+                delete(basePathStore + Id).
+                then().
+                statusCode(200).
+                and().log().all();
+    }
 }
+
