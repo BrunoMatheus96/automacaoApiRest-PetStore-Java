@@ -28,16 +28,14 @@ Este é um projeto desenvolvido em Java para automatizar testes de API Rest util
 https://petstore.swagger.io/#/pet
 ### APIs
 ![Badge em Desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=%20PENDENTE&olor=gray&style=for-the-badge)
-* POST - Upload de imagem
-* PUT
-* POST - Update de Pet com a data
-* DELETE - Exclusão de Pet
-* POST - Novo pet
+* STORE - DELETE - Exclusão por Id
 
 ![Badge em Desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=blue&style=for-the-badge)
-* POST - Criação de um novo Pet-
+* STORE - POST - Cadastro
 
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUÍDO&color=GREEN&style=for-the-badge)
-* GET - Find Pets by Status
-* GET - Pet por ID
+* PET - POST - Criação de um novo Pet
+* PET - GET - Find Pets by Status
+* PET - GET - Pet por ID
+* PET - PUT

@@ -312,10 +312,4 @@ public class PetTest {
                 assertThat().body("tags.name", everyItem(equalTo("Amor da minha vida 02"))).
                 assertThat().body("status", equalTo("sold")).log().all();
     }
-
-    /*-----------------------------------POST - Update de Pet com a data----------------------------------------------*/
-
-
-    /*--------------------------------------DELETE - Exclusão de Pet--------------------------------------------------*/
-
 }
