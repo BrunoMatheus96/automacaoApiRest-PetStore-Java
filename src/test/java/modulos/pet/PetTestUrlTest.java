@@ -6,6 +6,7 @@ import DataFactory.NewPetDataFactory;
 import DataFactory.PetDataFactory;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+import BaseUrl.BaseUrlTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +16,7 @@ import static org.hamcrest.Matchers.*;
 
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Pet'") //Título principal
-public class PetTest {
-
-    @BeforeEach //Antes de cada teste faça algo
-    public void beforeEach() {
-        //Configurando os dados da API Rest da Lojinha
-        baseURI = "https://petstore.swagger.io/v2";
-        //Caminho inicial da aplicação que se repete em todas as URL
-    }
-
+public class PetTestUrlTest extends BaseUrlTest {
     String[] methods = {"POST", "PUT", "PATCH", "DELETE"};
 
     /*-------------------------------------GET - BUSCA DE PET POR STATUS----------------------------------------*/

@@ -2,22 +2,16 @@ package modulos.pet;
 
 import DataFactory.StoreDataFactory;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import BaseUrl.BaseUrlTest;
 
-import static general.basePath.*;
+import static BaseUrl.BaseUrlStore.*;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Store'") //Título principal
-public class StoreTest {
-    @BeforeEach //Antes de cada teste faça algo
-    public void beforeEach() {
-        //Configurando os dados da API Rest da Lojinha
-        baseURI = "https://petstore.swagger.io/v2";
-        //Caminho inicial da aplicação que se repete em todas as URL
-    }
+public class StoreTestUrlTest extends BaseUrlTest {
 
     /*-----------------------------------GET - RETORNA INVENTÁRIO DE PET POR STATUS-----------------------------------*/
     @Test
@@ -50,15 +44,15 @@ public class StoreTest {
     }
 
     /*---------------------------------------------GET - PESQUISA POR ID ---------------------------------------------*/
-    String Id = "/10";
 
     @Test
     @DisplayName("Pesquisa por Id 01 - Validar Status 200")
     public void testPesquisaPorId01() {
+        StoreDataFactory.beforeFindForId();
         given().
                 relaxedHTTPSValidation().
                 when().
-                get(basePathStore + Id).
+                get(basePathStore + orderId).
                 then().
                 statusCode(200).
                 and().log().all();
@@ -70,7 +64,7 @@ public class StoreTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get(basePathStore + Id).
+                get(basePathStore + orderId).
                 then().
                 statusCode(200).
                 assertThat().
@@ -91,7 +85,7 @@ public class StoreTest {
             given().
                     relaxedHTTPSValidation().
                     when().
-                    request(method, basePathStore + Id).
+                    request(method, basePathStore + orderId).
                     then().
                     statusCode(405).
                     assertThat().
@@ -186,4 +180,35 @@ public class StoreTest {
                 and().log().all();
     }
 
+    /*-------------------------------------------------DELETE---------------------------------------------------------*/
+    @Test
+    @DisplayName("Exclusão 01 - Validar Status 200")
+    public void testDelete01() {
+        given().
+                relaxedHTTPSValidation().
+                when().
+                delete(basePathStore + orderId).
+                then().
+                statusCode(200).
+                assertThat().
+                body("type", equalTo("unknown"),
+                        "message", equalTo("9")).
+                and().log().all();
+    }
+
+    @Test
+    @DisplayName("Exclusão 02 - Validar Status 404")
+    public void testDelete02() {
+        given().
+                relaxedHTTPSValidation().
+                when().
+                delete(basePathStore + orderId).
+                then().
+                statusCode(404).
+                assertThat().
+                body("type", equalTo("unknown"),
+                        "message", equalTo("Order Not Found")).
+                and().log().all();
+    }
 }
+

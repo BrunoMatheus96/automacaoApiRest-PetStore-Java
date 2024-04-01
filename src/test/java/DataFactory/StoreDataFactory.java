@@ -1,6 +1,10 @@
 package DataFactory;
 
+import io.restassured.http.ContentType;
 import pojo.StorePojo;
+
+import static BaseUrl.BaseUrlStore.basePathStore;
+import static io.restassured.RestAssured.given;
 
 public class StoreDataFactory {
     public  static StorePojo cadastroStore(){
@@ -14,5 +18,15 @@ public class StoreDataFactory {
         storeCadastro.setComplete(true);
 
         return storeCadastro;
+    }
+
+    public static void beforeFindForId() {
+        // Realiza o cadastro antes de buscar o ID
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(cadastroStore()).
+                when().
+                post(basePathStore);
     }
 }
