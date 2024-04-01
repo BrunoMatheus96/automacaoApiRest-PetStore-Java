@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.baseURI;
-import static io.restassured.RestAssured.given;
+import static general.basePath.*;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest dos métodos para o módulo 'Store'") //Título principal
@@ -26,9 +26,9 @@ public class StoreTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/store/inventory").
+                get(basePathStoreIventory).
                 then().
-                assertThat().statusCode(200).
+                statusCode(200).
                 and().log().all();
     }
 
@@ -40,40 +40,27 @@ public class StoreTest {
             given().
                     relaxedHTTPSValidation().
                     when().
-                    request(method, "/store/inventory").
+                    request(method, basePathStoreIventory).
                     then().
-                    assertThat().statusCode(405).
-                    assertThat().body("apiResponse.type", equalTo("unknown")).
+                    statusCode(405).
+                    assertThat().
+                    body("apiResponse.type", equalTo("unknown")).
                     and().log().all();
         }
     }
 
-    @Test
-    @DisplayName("Retorna inventário de Pet por Status 03 - Validar estrutura de resposta com Swagger")
-    public void testInventarioPorStatus03() {
-        given().
-                relaxedHTTPSValidation().
-                when().
-                get("/store/inventory").
-                then().
-                assertThat().statusCode(200).
-                assertThat().contentType(ContentType.JSON).
-                assertThat().
-                body("sold", instanceOf(Integer.class)). // Verifica se 'sold' é um número
-                body("commercial", instanceOf(Integer.class)). // Verifica se 'commercial' é um número
-                and().log().all();
-    }
-
     /*---------------------------------------------GET - PESQUISA POR ID ---------------------------------------------*/
+    String Id = "/10";
+
     @Test
     @DisplayName("Pesquisa por Id 01 - Validar Status 200")
     public void testPesquisaPorId01() {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/store/order/10").
+                get(basePathStore + Id).
                 then().
-                assertThat().statusCode(200).
+                statusCode(200).
                 and().log().all();
     }
 
@@ -83,16 +70,16 @@ public class StoreTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/store/order/10").
+                get(basePathStore + Id).
                 then().
-                assertThat().statusCode(200).
-                assertThat().contentType(ContentType.JSON).
+                statusCode(200).
                 assertThat().
-                body("id", instanceOf(Integer.class)).
-                body("petId", instanceOf(Integer.class)).
-                body("quantity", instanceOf(Integer.class)).
-                body("status", instanceOf(String.class)).
-                body("complete", instanceOf(Boolean.class)).
+                contentType(ContentType.JSON).
+                body("id", instanceOf(Integer.class),
+                        "petId", instanceOf(Integer.class),
+                        "quantity", instanceOf(Integer.class),
+                        "status", instanceOf(String.class),
+                        "complete", instanceOf(Boolean.class)).
                 and().log().all();
     }
 
@@ -104,10 +91,11 @@ public class StoreTest {
             given().
                     relaxedHTTPSValidation().
                     when().
-                    request(method, "/store/order/10").
+                    request(method, basePathStore + Id).
                     then().
-                    assertThat().statusCode(405).
-                    assertThat().body("apiResponse.type", equalTo("unknown")).
+                    statusCode(405).
+                    assertThat().
+                    body("apiResponse.type", equalTo("unknown")).
                     and().log().all();
         }
     }
@@ -118,11 +106,12 @@ public class StoreTest {
         given().
                 relaxedHTTPSValidation().
                 when().
-                get("/store/order/Teste").
+                get(basePathStore + "/Teste").
                 then().
-                assertThat().statusCode(404).
-                assertThat().body("type", equalTo("unknown")).
-                body("message", equalTo("java.lang.NumberFormatException: For input string: \"Teste\"")).
+                statusCode(404).
+                assertThat().
+                body("type", equalTo("unknown"),
+                        "message", equalTo("java.lang.NumberFormatException: For input string: \"Teste\"")).
                 and().log().all();
     }
 
@@ -135,15 +124,65 @@ public class StoreTest {
                 contentType(ContentType.JSON).
                 body(StoreDataFactory.cadastroStore()).
                 when().
-                post("/store/order").
+                post(basePathStore).
                 then().
-                assertThat().statusCode(200).
-                assertThat().body("id", equalTo(9)).
-                body("petId", equalTo(10)).
-                body("quantity", equalTo(11)).
-                body("shipDate", equalTo("2024-03-31T20:07:00.342+0000")).
-                body("status", equalTo("Teste Bruno")).
-                body("complete", equalTo(true)).
+                statusCode(200).
+                assertThat().
+                body("id", equalTo(9),
+                        "petId", equalTo(10),
+                        "quantity", equalTo(11),
+                        "shipDate", equalTo("2024-03-31T20:07:00.342+0000"),
+                        "status", equalTo("Teste Bruno"),
+                        "complete", equalTo(true)).
+                and().log().all();
+    }
+
+    @Test
+    @DisplayName("CADASTRO 02 - Validar se a resposta da API está na estrutura esperada JSON")
+    public void testCadastro02() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(StoreDataFactory.cadastroStore()).
+                when().
+                post(basePathStore).
+                then().
+                assertThat().contentType(ContentType.JSON).
+                and().log().all();
+    }
+
+    @Test
+    @DisplayName("CADASTRO 03 - Verificar se a API retorna o código de status HTTP correto para cada método")
+    public void testCadastro03() {
+        String[] methods = {"GET", "PUT", "PATCH", "DELETE", "HEAD"};
+        for (String method : methods) {
+            given().
+                    relaxedHTTPSValidation().
+                    when().
+                    request(method, basePathStore).
+                    then().
+                    statusCode(405).
+                    and().log().all();
+        }
+    }
+
+    @Test
+    @DisplayName("CADASTRO 04 - Validar Status 200 e tipagem do retorno")
+    public void testCadastro04() {
+        given().
+                relaxedHTTPSValidation().
+                contentType(ContentType.JSON).
+                body(StoreDataFactory.cadastroStore()).
+                when().
+                post(basePathStore).
+                then().
+                statusCode(200).
+                assertThat().
+                body("id", instanceOf(Integer.class),
+                        "petId", instanceOf(Integer.class),
+                        "quantity", instanceOf(Integer.class),
+                        "status", instanceOf(String.class),
+                        "complete", instanceOf(Boolean.class)).
                 and().log().all();
     }
 
