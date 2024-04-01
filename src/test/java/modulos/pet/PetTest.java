@@ -36,17 +36,17 @@ public class PetTest {
                 when().
                 get("/pet/findByStatus").
                 then().
-                assertThat().statusCode(200).and().
-                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
-                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
-                assertThat().body("category.id", everyItem(anyOf(instanceOf(Number.class), nullValue()))).
-                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
-                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
-                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
-                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
-                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
-                assertThat().body("status", hasItem("available")).
-                assertThat().contentType(ContentType.JSON).
+                assertThat().statusCode(200).
+                body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                body("category.id", everyItem(anyOf(instanceOf(Number.class), nullValue()))).
+                body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                body("status", hasItem("available")).
+                contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -59,17 +59,17 @@ public class PetTest {
                 when().
                 get("/pet/findByStatus").
                 then().
-                assertThat().statusCode(200).and().
-                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
-                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
-                assertThat().body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
-                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
-                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
-                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
-                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
-                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
-                assertThat().body("status", hasItem("pending")).
-                assertThat().contentType(ContentType.JSON).
+                assertThat().statusCode(200).
+                body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                body("status", hasItem("pending")).
+                contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -82,17 +82,17 @@ public class PetTest {
                 when().
                 get("/pet/findByStatus").
                 then().
-                assertThat().statusCode(200).and().
-                assertThat().body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
-                assertThat().body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
-                assertThat().body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
-                assertThat().body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
-                assertThat().body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
-                assertThat().body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
-                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
-                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
-                assertThat().body("status", hasItem("sold")).
-                assertThat().contentType(ContentType.JSON).
+                assertThat().statusCode(200).
+                body("id", everyItem(instanceOf(Number.class))). //Verfica que o id é número
+                body("category", everyItem(anyOf(instanceOf(Object.class), nullValue()))). // Verifica se cada item de category é um objeto ou nulo
+                body("category.id", everyItem(instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                body("category.name", everyItem(anyOf(nullValue(), instanceOf(String.class)))). // Verifica se o campo category.name é do tipo String ou nulo
+                body("name", everyItem(anyOf(instanceOf(String.class), nullValue()))).
+                body("tags", everyItem(anyOf(instanceOf(ArrayList.class), nullValue()))). // Verifica se cada item TAGS é uma lista ou nulo
+                body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                body("status", hasItem("sold")).
+                contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -123,18 +123,17 @@ public class PetTest {
                 when().
                 get(petId).
                 then().
-                assertThat().statusCode(200).and().
-                assertThat().body("id", instanceOf(Number.class)).
-                assertThat().body("id", equalTo(9)).
-                assertThat().body("category", (instanceOf(Object.class))). // Verifica se cada item de category é um objeto ou nulo
-                assertThat().body("category.id", (instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
-                assertThat().body("category.name", (instanceOf(String.class))). // Verifica se o campo category.name é do tipo String ou nulo
-                assertThat().body("name", (instanceOf(String.class))).
-                assertThat().body("tags", (instanceOf(ArrayList.class))). // Verifica se cada item TAGS é uma lista ou nulo
-                assertThat().body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
-                assertThat().body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
-                assertThat().body("status", (instanceOf(String.class))).
-                assertThat().contentType(ContentType.JSON).
+                assertThat().statusCode(200).
+                body("id", instanceOf(Number.class)).
+                body("id", equalTo(9)).
+                body("category", (instanceOf(Object.class)),"category.id", (instanceOf(Integer.class))). //Verifica se o campo category.id é do tipo Integer
+                body("category.name", (instanceOf(String.class))). // Verifica se o campo category.name é do tipo String ou nulo
+                body("name", (instanceOf(String.class))).
+                body("tags", (instanceOf(ArrayList.class))). // Verifica se cada item TAGS é uma lista ou nulo
+                body("tags.id", everyItem(anyOf(instanceOf(Integer.class), instanceOf(List.class)))).
+                body("tags.name", everyItem(anyOf(instanceOf(String.class), instanceOf(List.class)))).
+                body("status", (instanceOf(String.class))).
+                contentType(ContentType.JSON).
                 log().all();
     }
 
@@ -191,7 +190,7 @@ public class PetTest {
                     when().
                     request(method, "/pet").
                     then().
-                    assertThat().statusCode(405).and().log().all();
+                    statusCode(405).and().log().all();
         }
     }
 
@@ -312,10 +311,4 @@ public class PetTest {
                 assertThat().body("tags.name", everyItem(equalTo("Amor da minha vida 02"))).
                 assertThat().body("status", equalTo("sold")).log().all();
     }
-
-    /*-----------------------------------POST - Update de Pet com a data----------------------------------------------*/
-
-
-    /*--------------------------------------DELETE - Exclusão de Pet--------------------------------------------------*/
-
 }
